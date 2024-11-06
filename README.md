@@ -3,7 +3,7 @@
 Front-end do produto-api.
 
 # Depêndencias
-- flutter
+- Flutter
 
 # Instale o Flutter
 
