@@ -139,6 +139,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 
+
 class _MyHomePageState extends State<MyHomePage> {
   late Future<List<Product>> futureProducts;
 
@@ -152,36 +153,6 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       futureProducts = fetchProducts(); // Fetch the list of products
     });
-  }
-
-  // Função para confirmar a exclusão do produto
-  void _confirmDelete(BuildContext context, int productId) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Por favor confirme'),
-          content: const Text('Você realmente quer deletar esse produto?'),
-          actions: [
-            // O botão "Yes"
-            TextButton(
-              onPressed: () {
-                deleteProduct(productId);
-                Navigator.of(context).pop(); // Fecha o diálogo após excluir
-                atualizar(); // Atualiza a lista de produtos
-              },
-              child: const Text('Yes'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Fecha o diálogo sem excluir
-              },
-              child: const Text('No'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -215,31 +186,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   return ListTile(
                     title: Text(product.description),
                     subtitle: Text('Preço: ${product.price}'),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min, // Para evitar que os botões ocupem muito espaço
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyEditForm(product: product),
-                              ),
-                            ).then((value) {
-                              atualizar(); // Re-fetch products after editing
-                            });
-                          },
+                    onTap: () {
+                      // Aqui não tem mais edição ou exclusão, apenas um tap para detalhes
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyEditForm(product: product),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            _confirmDelete(context, product.productId); // Exibe a confirmação de deleção
-                          },
-                        ),
-                      ],
-                    ),
-                    onTap: () {}, // Remove esta linha se não for necessário o onTap
+                      ).then((value) {
+                        atualizar(); // Re-fetch products after navigation
+                      });
+                    },
                   );
                 },
               );
@@ -264,6 +221,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
 
 
 class MyCustomForm extends StatefulWidget {
